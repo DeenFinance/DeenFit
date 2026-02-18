@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DeenFit</title>
+    <style>
+        /* --- APP THEME & RESET --- */
+        :root { --primary: #FF4B4B; --bg: #121418; --card: #1E2229; --text: #ffffff; --gray: #888; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding-bottom: 90px; -webkit-tap-highlight-color: transparent; }
+        
+        /* --- HEADER --- */
+        header { padding: 25px 20px; background: linear-gradient(135deg, #FF4B4B, #FF9068); border-radius: 0 0 30px 30px; box-shadow: 0 10px 30px rgba(255, 75, 75, 0.2); }
+        h1 { margin: 0; font-size: 26px; letter-spacing: -0.5px; }
+        p.subtitle { margin: 5px 0 0; opacity: 0.9; font-size: 14px; }
+        
+        /* --- DASHBOARD --- */
+        .container { padding: 20px; transition: opacity 0.3s; }
+        .section-title { font-size: 18px; margin: 30px 0 15px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Workout Cards */
+        .card { background: var(--card); border-radius: 20px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; active: scale(0.98); transition: transform 0.1s; cursor: pointer; }
+        .card:active { transform: scale(0.98); }
+        .card-icon { width: 55px; height: 55px; background: rgba(255, 75, 75, 0.15); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--primary); }
+        .card-info { flex: 1; margin-left: 15px; }
+        .card h3 { margin: 0 0 5px; font-size: 16px; }
+        .card p { margin: 0; color: var(--gray); font-size: 12px; }
+
+        /* Naija Food Tracker */
+        .food-tracker { background: #2A2F3A; padding: 20px; border-radius: 20px; border-left: 5px solid var(--primary); }
+        .food-input-group { display: flex; gap: 10px; margin-top: 15px; }
+        select { flex: 1; background: #121418; color: white; padding: 12px; border-radius: 10px; border: 1px solid #333; outline: none; }
+        button.add-btn { background: var(--primary); color: white; border: none; padding: 0 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+
+        /* --- WORKOUT PLAYER OVERLAY (Hidden by default) --- */
+        #workoutPlayer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 100;
+            transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            display: flex; flex-direction: column;
+        }
+        #workoutPlayer.active { transform: translateY(0); }
+
+        .player-header { padding: 20px; display: flex; align-items: center; }
+        .back-btn { font-size: 24px; padding: 10px; margin-right: 10px; background: var(--card); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        
+        .timer-box { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .timer-circle { width: 180px; height: 180px; border: 8px solid var(--card); border-top: 8px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 50px; font-weight: bold; margin-bottom: 30px; }
+        
+        .controls { display: flex; gap: 20px; margin-bottom: 50px; }
+        .btn-large { padding: 15px 40px; border-radius: 30px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .btn-start { background: var(--primary); color: white; }
+        .btn-pause { background: var(--card); color: white; }
+
+        /* --- BOTTOM NAV --- */
+        .nav { position: fixed; bottom: 0; width: 100%; background: var(--card); padding: 15px 0; display: flex; justify-content: space-around; border-top: 1px solid #333; padding-bottom: 25px; z-index: 50; }
+        .nav-item { text-align: center; font-size: 10px; color: var(--gray); }
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+    <div id="dashboard">
+        <header>
+            <h1>DeenFit</h1>
+            <p class="subtitle">Day 1 • 28 Day Challenge</p>
+            <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: end;">
+                <div>
+                    <span style="font-size: 36px; font-weight: 800;">1,780</span>
+                    <span style="font-size: 14px; opacity: 0.8;"> KCAL</span>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 12px; opacity: 0.8;">Goal: 2,500</div>
+                    <div style="height: 6px; width: 80px; background: rgba(0,0,0,0.2); border-radius: 3px; margin-top: 5px;">
+                        <div style="height: 100%; width: 70%; background: white; border-radius: 3px;"></div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="section-title">🇳🇬 Naija Meal Tracker</div>
+            <div class="food-tracker">
+                <h3 style="margin:0;">What did you eat?</h3>
+                <div class="food-input-group">
+                    <select id="foodSelect">
+                        <option value="300">Jollof Rice (300 kcal)</option>
+                        <option value="400">Pounded Yam (400 kcal)</option>
+                        <option value="550">Egusi Soup (550 kcal)</option>
+                        <option value="150">Moi Moi (150 kcal)</option>
+                    </select>
+                    <button class="add-btn" onclick="addCalories()">+</button>
+                </div>
+                <p style="margin-top:15px; font-size:14px; color:#aaa;">Total: <strong id="totalCals" style="color:var(--primary)">0</strong> kcal</p>
+            </div>
+
+            <div class="section-title">
+                <span>Today's Workouts</span>
+                <span style="color:var(--primary); font-size:14px;">See All</span>
+            </div>
+
+            <div class="card" onclick="openPlayer('Full Body Crush', 15)">
+                <div class="card-icon">⚡</div>
+                <div class="card-info">
+                    <h3>Full Body Crush</h3>
+                    <p>15 Mins • High Intensity</p>
+                </div>
+                <div style="font-size:20px; color:var(--gray);">▶</div>
+            </div>
+
+            <div class="card" onclick="openPlayer('Ab Destroyer', 10)">
+                <div class="card-icon">🔥</div>
+                <div class="card-info">
+                    <h3>Ab Destroyer</h3>
+                    <p>10 Mins • Core Focus</p>
+                </div>
+                <div style="font-size:20px; color:var(--gray);">▶</div>
+            </div>
+            
+            <div style="margin-top: 30px; height: 100px; background: #222; border: 2px dashed #444; display: flex; align-items: center; justify-content: center; color: #666;">
+                AdMob Banner Area
+            </div>
+        </div>
+    </div>
+
+    <div id="workoutPlayer">
+        <div class="player-header">
+            <div class="back-btn" onclick="closePlayer()">↓</div>
+            <h3 id="playerTitle" style="margin:0;">Workout Name</h3>
+        </div>
+
+        <div class="timer-box">
+            <div style="margin-bottom: 20px; color: var(--gray); letter-spacing: 2px;">PUSH UPS</div>
+            
+            <img src="https://media.tenor.com/gI-8qCUEko8AAAAC/pushup.gif" 
+                 style="width: 80%; border-radius: 15px; margin-bottom: 30px; border: 2px solid #333;"
+                 alt="Workout Animation">
+            
+            <div class="timer-circle" id="timerDisplay">00:30</div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-large btn-pause" onclick="resetTimer()">Reset</button>
+            <button class="btn-large btn-start" onclick="startTimer()">Start</button>
+        </div>
+    </div>
+
+    <div class="nav">
+        <div class="nav-item active">
+            <span class="nav-icon">🏠</span> Home
+        </div>
+        <div class="nav-item">
+            <span class="nav-icon">📊</span> Stats
+        </div>
+        <div class="nav-item">
+            <span class="nav-icon">👤</span> Me
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIC ---
+
+        // 1. Calorie Tracker
+        let currentCals = localStorage.getItem('deenFitCals') ? parseInt(localStorage.getItem('deenFitCals')) : 0;
+        document.getElementById('totalCals').innerText = currentCals;
+
+        function addCalories() {
+            const select = document.getElementById('foodSelect');
+            const calories = parseInt(select.value);
+            currentCals += calories;
+            document.getElementById('totalCals').innerText = currentCals;
+            localStorage.setItem('deenFitCals', currentCals);
+        }
+
+        // 2. Workout Player Logic
+        let timerInterval;
+        let timeLeft = 30;
+        const player = document.getElementById('workoutPlayer');
+        const timerDisplay = document.getElementById('timerDisplay');
+
+        function openPlayer(title, duration) {
+            document.getElementById('playerTitle').innerText = title;
+            player.classList.add('active');
+            timeLeft = 30; // Default exercise time
+            updateTimerDisplay();
+        }
+
+        function closePlayer() {
+            player.classList.remove('active');
+            clearInterval(timerInterval);
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if(timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    alert("Exercise Complete! Rest now.");
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 30;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerDisplay.innerText = 
+                (minutes < 10 ? "0" : "") + minutes + ":" + 
+                (seconds < 10 ? "0" : "") + seconds;
+        }
+    </script>
+</body>
+          </html>
