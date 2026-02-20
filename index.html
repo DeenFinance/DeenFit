@@ -17,11 +17,93 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Green Theme Body */
         body {
             background-color: #0b3d2e; /* Deep Forest Green */
             color: #ffffff;
-            padding-bottom: 80px; /* Space for bottom nav */
+            height: 100vh;
+            overflow: hidden; /* Prevent scrolling on login */
+        }
+
+        /* --- LOGIN SCREEN --- */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0b3d2e, #000000);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-logo img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+        }
+
+        #login-screen h2 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        #login-screen p {
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 15px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .btn-primary {
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: #4caf50;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* --- DASHBOARD --- */
+        #app-container {
+            display: none; /* Hidden until login */
+            height: 100%;
+            overflow-y: auto;
+            padding-bottom: 90px;
         }
 
         /* Header */
@@ -43,7 +125,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: white; /* Logo stands out */
+            background-color: white;
             padding: 2px;
         }
 
@@ -55,16 +137,27 @@
         .header-text p {
             font-size: 0.8rem;
             opacity: 0.8;
+            color: #4caf50; /* Highlight user name */
         }
 
-        .user-profile i {
-            font-size: 1.2rem;
-            color: #ffffff;
+        /* TAB SECTIONS */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Cards */
         .card {
-            background-color: rgba(255, 255, 255, 0.1); /* Glass effect */
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 20px;
             margin: 0 20px 20px 20px;
@@ -72,16 +165,12 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Meal Tracker Specifics */
-        .meal-tracker h2 {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-        }
-
+        /* Meal Tracker */
         .tracker-input {
             display: flex;
             gap: 10px;
             margin-bottom: 15px;
+            margin-top: 10px;
         }
 
         select {
@@ -91,302 +180,380 @@
             border: none;
             background-color: rgba(0, 0, 0, 0.3);
             color: white;
-            font-size: 0.9rem;
-            outline: none;
         }
 
         #add-meal-btn {
-            background-color: #ff5252; /* Red accent button */
+            background-color: #ff5252;
             color: white;
             border: none;
             padding: 0 20px;
             border-radius: 8px;
             font-size: 1.2rem;
-            cursor: pointer;
         }
 
-        .stats p {
-            color: #aaaaaa;
-        }
+        .stats p { color: #aaaaaa; }
+        .highlight { color: #ff5252; font-weight: bold; font-size: 1.1rem; }
 
-        .highlight {
-            color: #ff5252;
-            font-weight: bold;
-            font-size: 1.1rem;
+        /* Stats Page Specifics */
+        .stat-box {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
         }
+        
+        .stat-box h3 { font-size: 2rem; color: #4caf50; }
+        .stat-box span { font-size: 0.9rem; color: #ccc; }
 
-        /* Workout Section */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
+        /* Profile Page */
+        .profile-header {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        .profile-pic-large {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto 10px auto;
+            display: flex; 
+            justify-content: center; 
             align-items: center;
-            padding: 0 20px 15px 20px;
+            color: #0b3d2e;
+            font-size: 40px;
+        }
+        .btn-logout {
+            background-color: #ff5252;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
         }
 
-        .section-header h3 {
-            font-size: 1.1rem;
-        }
-
-        .see-all {
-            color: #4caf50; /* Bright Green Link */
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        /* Workout List Items */
+        /* Workouts */
         .workout-card {
             display: flex;
             align-items: center;
             padding: 15px;
             margin-bottom: 10px;
             cursor: pointer;
-            background-color: #1a4d3e; /* Slightly lighter green */
-            transition: transform 0.1s;
-        }
-
-        .workout-card:active {
-            transform: scale(0.98);
+            background-color: #1a4d3e;
         }
 
         .icon-box {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-            font-size: 1.2rem;
+            width: 45px; height: 45px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-right: 15px; font-size: 1.2rem;
         }
+        .bolt { background: rgba(255,193,7,0.2); color: #ffc107; }
+        .fire { background: rgba(255,87,34,0.2); color: #ff5722; }
+        .run { background: rgba(33,150,243,0.2); color: #2196f3; }
 
-        .bolt { background-color: rgba(255, 193, 7, 0.2); color: #ffc107; }
-        .fire { background-color: rgba(255, 87, 34, 0.2); color: #ff5722; }
-        .run { background-color: rgba(33, 150, 243, 0.2); color: #2196f3; }
-
-        .workout-info h4 {
-            font-size: 1rem;
-            margin-bottom: 2px;
-        }
-
-        .workout-info p {
-            font-size: 0.8rem;
-            color: #cccccc;
-        }
-
-        .play-icon {
-            margin-left: auto;
-            color: #cccccc;
-        }
-
-        /* Modal for Video */
+        /* Video Modal */
         .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 100; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            background-color: rgba(0,0,0,0.9); 
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; z-index: 100; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.9);
+            align-items: center; justify-content: center;
         }
+        .modal-content { position: relative; width: 90%; max-width: 500px; }
+        .close-btn { position: absolute; top: -40px; right: 0; color: white; font-size: 30px; cursor: pointer; }
 
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 500px;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 101;
-        }
-
-        /* Bottom Navigation */
+        /* Bottom Nav */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #082e22; /* Darker green for footer */
-            display: flex;
-            justify-content: space-around;
+            position: fixed; bottom: 0; width: 100%;
+            background-color: #082e22;
+            display: flex; justify-content: space-around;
             padding: 15px 0;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             z-index: 50;
         }
-
         .nav-item {
-            color: #666;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.8rem;
-            gap: 4px;
+            color: #666; text-decoration: none;
+            display: flex; flex-direction: column; align-items: center;
+            font-size: 0.8rem; gap: 4px;
         }
-
-        .nav-item.active {
-            color: #4caf50; /* Bright Green Active State */
-        }
+        .nav-item.active { color: #4caf50; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="https://deenfinance.github.io/DeenFit/logo.png" alt="DeenFit Logo" class="logo">
-            <div class="header-text">
-                <h1>DeenFit</h1>
-                <p>Faith & Fitness</p>
-            </div>
+    <div id="login-screen">
+        <div class="login-logo">
+            <img src="https://deenfinance.github.io/DeenFit/logo.png" alt="Logo">
         </div>
-        <div class="user-profile">
-            <i class="fas fa-bell"></i>
+        <h2>Welcome to DeenFit</h2>
+        <p>Your journey to Faith & Fitness starts here.</p>
+        
+        <div class="input-group">
+            <input type="text" id="username-input" placeholder="Enter your name">
         </div>
-    </header>
-
-    <main>
-        <section class="card meal-tracker">
-            <h2>What did you eat?</h2>
-            <div class="tracker-input">
-                <select id="meal-select">
-                    <option value="300">Jollof Rice (300 kcal)</option>
-                    <option value="400">Pounded Yam & Egusi (400 kcal)</option>
-                    <option value="150">Moi Moi (150 kcal)</option>
-                    <option value="250">Fried Plantain (250 kcal)</option>
-                    <option value="100">Oatmeal (100 kcal)</option>
-                    <option value="200">Boiled Egg & Bread (200 kcal)</option>
-                </select>
-                <button id="add-meal-btn"><i class="fas fa-plus"></i></button>
-            </div>
-            <div class="stats">
-                <p>Total: <span id="total-calories" class="highlight">0</span> kcal</p>
-            </div>
-        </section>
-
-        <div class="section-header">
-            <h3>Today's Workouts</h3>
-            <a href="#" class="see-all">See All</a>
+        
+        <div class="input-group">
+            <select id="goal-input">
+                <option value="Weight Loss">Weight Loss</option>
+                <option value="Muscle Gain">Muscle Gain</option>
+                <option value="Maintenance">Maintenance</option>
+            </select>
         </div>
 
-        <div class="workout-list">
-            <div class="card workout-card" onclick="playVideo('video1')">
-                <div class="icon-box bolt">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="workout-info">
-                    <h4>Full Body Crush</h4>
-                    <p>15 Mins • High Intensity</p>
-                </div>
-                <i class="fas fa-play play-icon"></i>
-            </div>
+        <button class="btn-primary" onclick="registerUser()">Start Journey</button>
+    </div>
 
-            <div class="card workout-card" onclick="playVideo('video2')">
-                <div class="icon-box fire">
-                    <i class="fas fa-fire"></i>
+    <div id="app-container">
+        
+        <header>
+            <div class="logo-container">
+                <img src="https://deenfinance.github.io/DeenFit/logo.png" alt="Logo" class="logo">
+                <div class="header-text">
+                    <h1>DeenFit</h1>
+                    <p id="user-greeting">Hello, Guest</p>
                 </div>
-                <div class="workout-info">
-                    <h4>Ab Destroyer</h4>
-                    <p>10 Mins • Core Focus</p>
-                </div>
-                <i class="fas fa-play play-icon"></i>
             </div>
+            <div class="user-profile" onclick="switchTab('profile')">
+                <i class="fas fa-user-circle" style="font-size: 1.5rem;"></i>
+            </div>
+        </header>
 
-            <div class="card workout-card" onclick="playVideo('video3')">
-                <div class="icon-box run">
-                    <i class="fas fa-running"></i>
+        <div id="tab-home" class="tab-content active">
+            <section class="card meal-tracker">
+                <h2><i class="fas fa-utensils"></i> Meal Tracker</h2>
+                <div class="tracker-input">
+                    <select id="meal-select">
+                        <option value="300">Jollof Rice (300 kcal)</option>
+                        <option value="400">Pounded Yam & Egusi (400 kcal)</option>
+                        <option value="150">Moi Moi (150 kcal)</option>
+                        <option value="250">Fried Plantain (250 kcal)</option>
+                        <option value="100">Oatmeal (100 kcal)</option>
+                        <option value="200">Boiled Egg & Bread (200 kcal)</option>
+                    </select>
+                    <button id="add-meal-btn"><i class="fas fa-plus"></i></button>
                 </div>
-                <div class="workout-info">
-                    <h4>Morning Cardio</h4>
-                    <p>20 Mins • Endurance</p>
+                <div class="stats">
+                    <p>Total Today: <span id="total-calories" class="highlight">0</span> kcal</p>
                 </div>
-                <i class="fas fa-play play-icon"></i>
+            </section>
+
+            <div class="section-header">
+                <h3>Today's Workouts</h3>
+            </div>
+            <div class="workout-list">
+                <div class="card workout-card" onclick="playVideo('video1')">
+                    <div class="icon-box bolt"><i class="fas fa-bolt"></i></div>
+                    <div class="workout-info"><h4>Full Body Crush</h4><p>15 Mins • High Intensity</p></div>
+                    <i class="fas fa-play play-icon"></i>
+                </div>
+                <div class="card workout-card" onclick="playVideo('video2')">
+                    <div class="icon-box fire"><i class="fas fa-fire"></i></div>
+                    <div class="workout-info"><h4>Ab Destroyer</h4><p>10 Mins • Core Focus</p></div>
+                    <i class="fas fa-play play-icon"></i>
+                </div>
+                <div class="card workout-card" onclick="playVideo('video3')">
+                    <div class="icon-box run"><i class="fas fa-running"></i></div>
+                    <div class="workout-info"><h4>Morning Cardio</h4><p>20 Mins • Endurance</p></div>
+                    <i class="fas fa-play play-icon"></i>
+                </div>
             </div>
         </div>
 
-        <div id="video-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeVideo()">&times;</span>
-                <iframe id="youtube-player" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+        <div id="tab-stats" class="tab-content">
+            <div class="section-header"><h3>Your Progress</h3></div>
+            
+            <div class="card">
+                <div class="stat-box">
+                    <h3 id="stat-calories">0</h3>
+                    <span>Calories Consumed Today</span>
+                </div>
+                <div class="stat-box">
+                    <h3 id="stat-workouts">0</h3>
+                    <span>Workouts Completed</span>
+                </div>
+                <div class="stat-box" style="border-bottom: none;">
+                    <h3 id="stat-goal">Weight Loss</h3>
+                    <span>Current Goal</span>
+                </div>
             </div>
         </div>
 
-    </main>
+        <div id="tab-profile" class="tab-content">
+            <div class="card">
+                <div class="profile-header">
+                    <div class="profile-pic-large"><i class="fas fa-user"></i></div>
+                    <h2 id="profile-name">User Name</h2>
+                    <p id="profile-goal" style="color: #4caf50;">Goal: Fitness</p>
+                </div>
+                <button class="btn-logout" onclick="logout()">Log Out</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="video-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeVideo()">&times;</span>
+            <iframe id="youtube-player" width="100%" height="315" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
+        <a href="#" class="nav-item active" onclick="switchTab('home')">
+            <i class="fas fa-home"></i> <span>Home</span>
         </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-chart-bar"></i>
-            <span>Stats</span>
+        <a href="#" class="nav-item" onclick="switchTab('stats')">
+            <i class="fas fa-chart-bar"></i> <span>Stats</span>
         </a>
-        <a href="#" class="nav-item">
-            <i class="fas fa-user"></i>
-            <span>Me</span>
+        <a href="#" class="nav-item" onclick="switchTab('profile')">
+            <i class="fas fa-user"></i> <span>Profile</span>
         </a>
     </nav>
 
     <script>
-        // --- Calorie Tracker Logic ---
+        // --- 1. AUTHENTICATION SYSTEM ---
+        const loginScreen = document.getElementById('login-screen');
+        const appContainer = document.getElementById('app-container');
+        const userGreeting = document.getElementById('user-greeting');
+        const profileName = document.getElementById('profile-name');
+        const profileGoal = document.getElementById('profile-goal');
+        const statGoal = document.getElementById('stat-goal');
+
+        // Check if user is logged in on load
+        window.onload = function() {
+            const savedName = localStorage.getItem('deenfit_name');
+            const savedGoal = localStorage.getItem('deenfit_goal');
+            
+            if (savedName) {
+                showApp(savedName, savedGoal);
+            } else {
+                loginScreen.style.display = 'flex';
+                appContainer.style.display = 'none';
+            }
+            loadStats(); // Load saved calories
+        }
+
+        function registerUser() {
+            const nameInput = document.getElementById('username-input').value;
+            const goalInput = document.getElementById('goal-input').value;
+
+            if (nameInput.trim() === "") {
+                alert("Please enter your name!");
+                return;
+            }
+
+            // Save to phone storage
+            localStorage.setItem('deenfit_name', nameInput);
+            localStorage.setItem('deenfit_goal', goalInput);
+
+            showApp(nameInput, goalInput);
+        }
+
+        function showApp(name, goal) {
+            loginScreen.style.display = 'none';
+            appContainer.style.display = 'block';
+            
+            // Update UI with user info
+            userGreeting.innerText = "Hello, " + name;
+            profileName.innerText = name;
+            profileGoal.innerText = "Goal: " + goal;
+            statGoal.innerText = goal;
+        }
+
+        function logout() {
+            if(confirm("Are you sure you want to log out? Your data will be cleared.")) {
+                localStorage.clear();
+                location.reload(); // Refresh page to show login
+            }
+        }
+
+        // --- 2. NAVIGATION SYSTEM ---
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            // Highlight nav icon
+            // (Simple way: just finding by index, strictly assuming Home=0, Stats=1, Profile=2)
+            const navs = document.querySelectorAll('.nav-item');
+            if(tabName === 'home') navs[0].classList.add('active');
+            if(tabName === 'stats') {
+                navs[1].classList.add('active');
+                updateStatsUI(); // Refresh numbers when opening stats
+            }
+            if(tabName === 'profile') navs[2].classList.add('active');
+        }
+
+        // --- 3. DATA & TRACKER SYSTEM ---
         const mealSelect = document.getElementById('meal-select');
         const addMealBtn = document.getElementById('add-meal-btn');
         const totalCaloriesDisplay = document.getElementById('total-calories');
+        const statCaloriesDisplay = document.getElementById('stat-calories');
+        const statWorkoutsDisplay = document.getElementById('stat-workouts');
 
         let totalCalories = 0;
+        let workoutsCompleted = 0;
+
+        function loadStats() {
+            // Retrieve saved data
+            const savedCals = localStorage.getItem('deenfit_calories');
+            const savedWorkouts = localStorage.getItem('deenfit_workouts');
+            
+            if(savedCals) totalCalories = parseInt(savedCals);
+            if(savedWorkouts) workoutsCompleted = parseInt(savedWorkouts);
+
+            updateStatsUI();
+        }
+
+        function updateStatsUI() {
+            totalCaloriesDisplay.innerText = totalCalories;
+            statCaloriesDisplay.innerText = totalCalories;
+            statWorkoutsDisplay.innerText = workoutsCompleted;
+        }
 
         addMealBtn.addEventListener('click', () => {
             const selectedCalories = parseInt(mealSelect.value);
-            
-            // Add to total
             totalCalories += selectedCalories;
             
-            // Update display
-            totalCaloriesDisplay.innerText = totalCalories;
+            // Save immediately
+            localStorage.setItem('deenfit_calories', totalCalories);
+            
+            updateStatsUI();
             
             // Button Animation
             addMealBtn.style.transform = "scale(0.95)";
             setTimeout(() => addMealBtn.style.transform = "scale(1)", 100);
         });
 
-        // --- Video Player Logic ---
+        // --- 4. VIDEO PLAYER ---
         const modal = document.getElementById("video-modal");
         const player = document.getElementById("youtube-player");
 
         function playVideo(videoId) {
             let url = "";
-            
-            // Assign YouTube links
-            if (videoId === 'video1') {
-                url = "https://www.youtube.com/embed/ml6cT4AZdqI?autoplay=1"; // Full Body
-            } else if (videoId === 'video2') {
-                url = "https://www.youtube.com/embed/AnYl6Nk9GOA?autoplay=1"; // Abs
-            } else if (videoId === 'video3') {
-                url = "https://www.youtube.com/embed/yIQd2Ya0Ziw?autoplay=1"; // Cardio
-            }
+            if (videoId === 'video1') url = "https://www.youtube.com/embed/ml6cT4AZdqI?autoplay=1";
+            else if (videoId === 'video2') url = "https://www.youtube.com/embed/AnYl6Nk9GOA?autoplay=1";
+            else if (videoId === 'video3') url = "https://www.youtube.com/embed/yIQd2Ya0Ziw?autoplay=1";
 
             player.src = url;
             modal.style.display = "flex";
+
+            // Increment workout count
+            workoutsCompleted++;
+            localStorage.setItem('deenfit_workouts', workoutsCompleted);
         }
 
         function closeVideo() {
             modal.style.display = "none";
-            player.src = ""; // Stop video
+            player.src = "";
         }
 
-        // Close modal if clicking outside the video
         window.onclick = function(event) {
-            if (event.target == modal) {
-                closeVideo();
-            }
+            if (event.target == modal) closeVideo();
         }
     </script>
 </body>
-</html>
+        </html>
